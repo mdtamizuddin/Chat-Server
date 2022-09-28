@@ -1,9 +1,10 @@
 {
   "name": "chat",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "startD": "nodemon server.js"
   },
   "license": "MIT",
   "dependencies": {
