@@ -7,7 +7,9 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 const Message = require('./models/Message')
 
-app.use(cors())
+app.use(cors({
+  origin: "*"
+}))
 app.use(bodyParser.json())
 require('dotenv').config()
 const server = http.createServer(app)
