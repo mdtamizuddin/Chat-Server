@@ -6,6 +6,7 @@ const http = require('http')
 const { Server } = require('socket.io')
 const cors = require('cors')
 const Message = require('./models/Message')
+
 app.use(cors())
 app.use(bodyParser.json())
 require('dotenv').config()
@@ -22,14 +23,12 @@ mongoose.connect(uri, {
   .then(() => console.log('Database Is Connected'))
   .catch((err) => console.log(err))
 
-
-
 const users = {}
 
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
+    origin: 'https://dado-chat.mdtamiz.xyz',
+    methods: ['GET', 'POST','PUT']
   }
 })
 io.on("connection", (socket) => {
@@ -37,6 +36,7 @@ io.on("connection", (socket) => {
     users[socket.id] = email
     socket.broadcast.emit("new_connection", email)
   })
+  
   socket.on("send_message", (data) => {
     const newMessage = new Message(data)
     newMessage.save((err) => {
@@ -55,7 +55,10 @@ io.on("connection", (socket) => {
   })
 })
 
+
 app.use('/messages', require('./Router/messageRouter'))
+app.use('/user', require('./Router/userRouter'))
+app.use('/message', require('./Router/sendMail'))
 
 server.listen(5000, () => {
   console.log("Server Is Running");
