@@ -9,6 +9,10 @@ const MessageSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    photo: {
+        type: String,
+        default: ''
+    },
     to: {
         type: String,
         required: true,
