@@ -25,12 +25,7 @@ mongoose.connect(uri, {
 
 const users = {}
 
-const io = new Server(server, {
-  cors: {
-    origin: 'https://dado-chat.mdtamiz.xyz',
-    methods: ['GET', 'POST', 'PUT']
-  }
-})
+const io = new Server(server)
 
 io.on("connection", (socket) => {
   socket.on('new_user', (email) => {
