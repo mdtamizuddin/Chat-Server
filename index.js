@@ -28,15 +28,15 @@ const users = {}
 const io = new Server(server, {
   cors: {
     origin: 'https://dado-chat.mdtamiz.xyz',
-    methods: ['GET', 'POST','PUT']
+    methods: ['GET', 'POST', 'PUT']
   }
 })
+
 io.on("connection", (socket) => {
   socket.on('new_user', (email) => {
     users[socket.id] = email
     socket.broadcast.emit("new_connection", email)
   })
-  
   socket.on("send_message", (data) => {
     const newMessage = new Message(data)
     newMessage.save((err) => {
@@ -44,11 +44,7 @@ io.on("connection", (socket) => {
         console.log('Something went Wrong')
       }
       else {
-        Message.find({}, (err, data) => {
-          if (!err) {
-            socket.broadcast.emit("recive_message", data)
-          }
-        })
+        socket.broadcast.emit("recive_message", data)
       }
     })
 

@@ -19,11 +19,11 @@ router.get('/', (req, res) => {
 })
 router.get('/:email', (req, res) => {
     User.findOne({ email: req.params.email }, (err, data) => {
-        if (err) {
-            res.status(500).send({ message: "Something Went to wrong on Seerver" })
+        if (data) {
+            res.status(200).send({ email: data.email, name: data.name, verifyed: data.verifyed })
         }
         else {
-            res.status(200).send({ email: data.email, name: data.email, verifyed: data.verifyed })
+            res.status(500).send({ message: "Something Went to wrong on Seerver" })
         }
     })
 })

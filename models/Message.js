@@ -1,13 +1,25 @@
 const mongoose = require('mongoose')
 
 const MessageSchema = mongoose.Schema({
-    users: {
+    email: {
         type: String,
         required: true,
     },
-    messages: {
-        type: Array,
-        default: []
+    from: {
+        type: String,
+        required: true,
+    },
+    to: {
+        type: String,
+        required: true,
+    },
+    message: {
+        type: String,
+        required: true,
+    },
+    deleted: {
+        type: Boolean,
+        default: false
     },
     name: {
         type: String,
@@ -15,7 +27,7 @@ const MessageSchema = mongoose.Schema({
     },
     date: {
         type: Date,
-        required: true
+        required: true,
     }
 })
 
