@@ -6,16 +6,17 @@ const http = require('http')
 const { Server } = require('socket.io')
 const cors = require('cors')
 const Message = require('./models/Message')
-
-var corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://dado-chat.mdtamiz.xyz",
-    "http://192.168.0.106:3000/login"
-  ],
-  optionsSuccessStatus: 200
+var allowlist = ['http://loacalhost:3000', 'https://dado-chat.mdtamiz.xyz/',]
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
 }
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(bodyParser.json())
 require('dotenv').config()
 const server = http.createServer(app)
@@ -55,9 +56,9 @@ io.on("connection", (socket) => {
 })
 
 
-app.use('/messages', require('./Router/messageRouter'))
-app.use('/user', require('./Router/userRouter'))
-app.use('/message', require('./Router/sendMail'))
+app.use('/messages', cors(corsOptionsDelegate), require('./Router/messageRouter'))
+app.use('/user', cors(corsOptionsDelegate), require('./Router/userRouter'))
+app.use('/message', cors(corsOptionsDelegate), require('./Router/sendMail'))
 
 server.listen(5000, () => {
   console.log("Server Is Running");
