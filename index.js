@@ -10,7 +10,7 @@ app.use(cors())
 require('dotenv').config()
 const server = http.createServer(app)
 
-app.get('/api/', (req, res) => {
+app.get('/', (req, res) => {
   res.send({ message: "This Is Api Route" })
 })
 const uri = process.env.DB_URI
