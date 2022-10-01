@@ -7,9 +7,15 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 const Message = require('./models/Message')
 
-app.use(cors({
-  origin: "*"
-}))
+var corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "https://dado-chat.mdtamiz.xyz",
+    "http://192.168.0.106:3000/login"
+  ],
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions))
 app.use(bodyParser.json())
 require('dotenv').config()
 const server = http.createServer(app)
