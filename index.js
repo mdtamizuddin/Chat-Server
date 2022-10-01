@@ -56,9 +56,9 @@ io.on("connection", (socket) => {
 })
 
 
-app.use('/messages', cors(corsOptionsDelegate), require('./Router/messageRouter'))
-app.use('/user', cors(corsOptionsDelegate), require('./Router/userRouter'))
-app.use('/message', cors(corsOptionsDelegate), require('./Router/sendMail'))
+app.use('/messages', cors(), require('./Router/messageRouter'))
+app.use('/user', cors(), require('./Router/userRouter'))
+app.use('/message', cors(), require('./Router/sendMail'))
 
 server.listen(5000, () => {
   console.log("Server Is Running");
