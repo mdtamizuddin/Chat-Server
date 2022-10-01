@@ -1,13 +1,12 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const http = require('http')
-const { Server } = require('socket.io')
-const cors = require('cors')
-const Message = require('./models/Message')
-app.use(cors())
+
 app.use(bodyParser.json())
+app.use(cors())
 require('dotenv').config()
 const server = http.createServer(app)
 
@@ -22,34 +21,6 @@ mongoose.connect(uri, {
   .then(() => console.log('Database Is Connected'))
   .catch((err) => console.log(err))
 
-const users = {}
-
-const io = new Server(server)
-
-io.on("connection", (socket) => {
-  socket.on('new_user', (email) => {
-    users[socket.id] = email
-    socket.broadcast.emit("new_connection", email)
-  })
-  socket.on("send_message", (data) => {
-    const newMessage = new Message(data)
-    newMessage.save((err) => {
-      if (err) {
-        console.log('Something went Wrong')
-      }
-      else {
-        socket.broadcast.emit("recive_message", data)
-      }
-    })
-
-  })
-})
-const issue2options = {
-  origin: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-};
-app.options("/user", cors(issue2options));
 
 app.use('/messages', require('./Router/messageRouter'))
 app.use('/user', require('./Router/userRouter'))
